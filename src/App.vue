@@ -1,12 +1,20 @@
 <template>
   <header class="header">
-    <div class="wrapper">
+    <div class="wrapper--header">
       <p class="header__logo">My Books App</p>
     </div>
   </header>
   <main class="wrapper">
-    <ItemTable headline="Meine Merkliste" :allDatas="donkeyears" />
-    <ItemTable headline="Liste aller Bücher" :allDatas="books" />
+    <ItemTable
+      headline="Meine Merkliste"
+      :allDatas="donkeyears"
+      @donkeyearChanged="handledonkeyearChanged"
+    />
+    <ItemTable
+      headline="Liste aller Bücher"
+      :allDatas="books"
+      @donkeyearChanged="handledonkeyearChanged"
+    />
   </main>
 </template>
 
@@ -25,6 +33,30 @@ export default {
   computed: {
     donkeyears() {
       return this.books.filter((book) => book.isBookmarked);
+    },
+  },
+  methods: {
+    async handledonkeyearChanged(id) {
+      const index = this.books.findIndex((book) => book.id === id);
+      try {
+        const newBookmarkedValue = !this.books[index].isBookmarked;
+        const data = {
+          ...this.books[index],
+          isBookmarked: newBookmarkedValue,
+        };
+        await fetch(`http://localhost:3000/books/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        this.books[index].isBookmarked = newBookmarkedValue;
+      } catch {
+        alert(
+          "Es gab einen technischen Fehler, dass Buch konnte nicht hinzugefügt werden."
+        );
+      }
     },
   },
   async created() {
@@ -89,9 +121,7 @@ body {
 }
 
 .table-item__table-row button {
-  opacity: 0;
   padding: 5px;
-  transition: opacity 500ms;
   cursor: pointer;
   border-radius: 5px;
 }

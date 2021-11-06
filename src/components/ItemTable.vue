@@ -18,7 +18,16 @@
           <td>{{ allData.title }}</td>
           <td>{{ allData.isbn }}</td>
           <td>
-            <button class="table-item__table-btn-remove">- entfernen</button>
+            <button
+              class="
+                {'table-item__table-btn-remove':allData.isBookmarked,
+                'table-item__table-btn-add':!allData.isBookmarked,}
+              "
+              @click="donkeyearChanged(allData)"
+            >
+              <span v-if="allData.isBookmarked">➖ entfernen</span
+              ><span v-else>➕ hinzufügen</span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -29,6 +38,7 @@
 <script>
 export default {
   name: "ItemTable",
+  emits: ["donkeyearChanged"],
   props: {
     headline: {
       type: String,
@@ -37,6 +47,11 @@ export default {
     allDatas: {
       type: Array,
       default: () => [],
+    },
+  },
+  methods: {
+    donkeyearChanged(allData) {
+      this.$emit("donkeyearChanged", allData.id);
     },
   },
 };
