@@ -2,68 +2,25 @@
   <header class="header">
     <div class="wrapper--header">
       <p class="header__logo">My Books App</p>
+      <nav class="header__link-list">
+        <router-link class="header__link-item" to="/">Alle Bücher</router-link>
+        <router-link class="header__link-item" :to="{ name: 'AboutPage' }"
+          >About</router-link
+        >
+        <router-link class="header__link-item" :to="{ name: 'BookmarksPage' }"
+          >Merkliste</router-link
+        >
+      </nav>
     </div>
   </header>
   <main class="wrapper">
-    <ItemTable
-      headline="Meine Merkliste"
-      :allDatas="donkeyears"
-      @donkeyearChanged="handledonkeyearChanged"
-    />
-    <ItemTable
-      headline="Liste aller Bücher"
-      :allDatas="books"
-      @donkeyearChanged="handledonkeyearChanged"
-    />
+    <router-view />
   </main>
 </template>
 
 <script>
-import ItemTable from "@/components/ItemTable.vue";
 export default {
   name: "App",
-  data() {
-    return {
-      books: [],
-    };
-  },
-  components: {
-    ItemTable,
-  },
-  computed: {
-    donkeyears() {
-      return this.books.filter((book) => book.isBookmarked);
-    },
-  },
-  methods: {
-    async handledonkeyearChanged(id) {
-      const index = this.books.findIndex((book) => book.id === id);
-      try {
-        const newBookmarkedValue = !this.books[index].isBookmarked;
-        const data = {
-          ...this.books[index],
-          isBookmarked: newBookmarkedValue,
-        };
-        await fetch(`http://localhost:3000/books/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        this.books[index].isBookmarked = newBookmarkedValue;
-      } catch {
-        alert(
-          "Es gab einen technischen Fehler, dass Buch konnte nicht hinzugefügt werden."
-        );
-      }
-    },
-  },
-  async created() {
-    const response = await fetch("http://localhost:3000/books");
-    const data = await response.json();
-    this.books = data;
-  },
 };
 </script>
 
@@ -89,6 +46,11 @@ body {
   width: 960px;
 }
 
+.wrapper--header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .header {
   color: #ffffff;
   line-height: 3.3rem;
@@ -98,6 +60,17 @@ body {
 
 .header__logo {
   font-size: 1.8rem;
+}
+
+.header__link-item {
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  margin-left: 10px;
+  padding: 0 10px;
+}
+.router-link-active.header__link-item {
+  background-color: var(--primary-dark);
 }
 
 .table-item__table {

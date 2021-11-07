@@ -58,7 +58,7 @@
       "publisher": "O'Reilly Media",
       "price": "$4.65",
       "numPages": 256,
-      "isBookmarked": true
+      "isBookmarked": false
     },
     {
       "id": "9780596527525",
@@ -70,7 +70,7 @@
       "publisher": "O'Reilly Media",
       "price": "$4.13",
       "numPages": 480,
-      "isBookmarked": true
+      "isBookmarked": false
     },
     {
       "id": "9780596529260",
@@ -94,7 +94,7 @@
       "publisher": "O'Reilly Media",
       "price": "$3.49",
       "numPages": 128,
-      "isBookmarked": true
+      "isBookmarked": false
     },
     {
       "id": "9780735649705",

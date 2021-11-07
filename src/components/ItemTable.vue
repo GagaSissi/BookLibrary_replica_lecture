@@ -19,10 +19,10 @@
           <td>{{ allData.isbn }}</td>
           <td>
             <button
-              class="
-                {'table-item__table-btn-remove':allData.isBookmarked,
-                'table-item__table-btn-add':!allData.isBookmarked,}
-              "
+              :class="{
+                'table-item__table-btn-remove': allData.isBookmarked,
+                'table-item__table-btn-add': !allData.isBookmarked,
+              }"
               @click="donkeyearChanged(allData)"
             >
               <span v-if="allData.isBookmarked">➖ entfernen</span
